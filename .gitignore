@@ -1,0 +1,23 @@
+.DS_Store
+
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+
+# User-specific files
+.Ruserdata
+
+# Test files
+test/
+
+# Output files from R CMD build
+/*.tar.gz
+
+# RStudio files
+.Rproj.user/
+
+# R Environment Variables
+.Renviron
