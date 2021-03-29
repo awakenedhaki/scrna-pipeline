@@ -2,35 +2,32 @@
 % Please edit documentation in R/featureSelect.R
 \name{featureSelect}
 \alias{featureSelect}
-\title{Select highly variable genes based on per-gene variation model (dispatcher).}
+\title{Dispatcher function for feature selection protocols.}
 \usage{
-featureSelect(
-  sce,
-  n = NULL,
-  prop = NULL,
-  fdr.threshold = NULL,
-  fit.trend = "poisson",
-  subset.name = "subset"
-)
+featureSelect(sce, seed = 100, protocol, model, ...)
 }
 \arguments{
-\item{sce}{\code{\link{SingleCellExperiment}} object}
+\item{sce}{\code{\link{SingleCellExperiment}} object.}
 
-\item{n}{Integer, number of genes to select}
+\item{seed}{Initial state of random number generator.}
 
-\item{prop}{Numeric, proportion of genes to select}
+\item{protocol}{Gene variance model to be fitted.
+Current protocols include:
+\itemize{
+\item 'vanilla': \code{\link[scran]{modelGeneVar}}.
+\item 'poisson': \code{\link[scran]{modelGeneVarByPoisson}}
+}}
 
-\item{fdr.threshold}{Numeric, false discovery rate threshold}
+\item{model}{List of parameters for the gene variance models.}
 
-\item{fit.trend}{String, the trend tha data will be fit into}
-
-\item{subset.name}{String, name highly variable gene subset}
+\item{...}{Parameters for \code{\link[scran]{getTopHVGs}}}
 }
 \value{
-\code{\link{SingleCellExperiment}} object
+\code{\link{SingleCellExperiment}} object.
+Highly variable genes are added to SingleCellExperiment::rowData.
 }
 \description{
-Select highly variable genes based on per-gene variation model (dispatcher).
+Dispatcher function for feature selection protocols.
 }
 \details{
 Noise to signal ratio is a function of the number of highly variable genes
