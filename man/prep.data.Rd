@@ -2,18 +2,33 @@
 % Please edit documentation in R/prep.R
 \name{prep.data}
 \alias{prep.data}
-\title{Prepare data for processing}
+\title{Prepare data for processing.}
 \usage{
-prep.data(path10x, experiment.name)
+prep.data(path10x, identifier)
 }
 \arguments{
-\item{path10x}{Path to CellRanger output directory}
+\item{path10x}{String, path to 10X sample data.}
 
-\item{experiment.name}{String, experiment identifier}
+\item{identifier}{String, experiment identifier}
 }
 \value{
 \code{\link{SingleCellExperiment}} object
 }
 \description{
-Prepare data for processing
+Prepare data for processing.
+}
+\details{
+Reading 10x sample directory containing \code{barcodes.tsv}, \code{genes.tsv} and \code{matrix.mtx}
+and encapsulating the data as a \code{\link{SingleCellExperiment}} object.
+
+The data is prepared for downstream processing by:
+\itemize{
+\item Renaming column names to the \code{Barcode} IDs.
+\item Renaming row names in to ENSEMBL ID-gene symbol pairs.
+\item Adding a experiment identifier column for ease of dataset integration.
+\item Replacing \code{NA} values with character representation \code{"NA"}.
+}
+
+\code{\link{SummarizedExperiment}} is imported since \code{\link[SummarizedExperiment]{rowData}}
+is not within the \code{\link{SingleCellExperiment}} namespace.
 }

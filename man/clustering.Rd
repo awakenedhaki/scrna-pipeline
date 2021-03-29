@@ -6,7 +6,7 @@
 
 TODO: Add hierarchical clustering}
 \usage{
-clustering(sce, method, ...)
+clustering(sce, method = "graph", ...)
 }
 \arguments{
 \item{sce}{\code{\link{SingleCellExperiment}} object}

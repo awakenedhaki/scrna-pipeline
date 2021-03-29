@@ -4,12 +4,14 @@
 \alias{save.processed}
 \title{TODO: Add documentation}
 \usage{
-save.processed(obj, name)
+save.processed(obj, name, identifier)
 }
 \arguments{
 \item{obj}{\code{\link{SingleCellExperiment}} object}
 
 \item{name}{String, name of file}
+
+\item{identifier}{TODO}
 }
 \description{
 TODO: Add documentation

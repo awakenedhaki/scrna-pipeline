@@ -9,13 +9,13 @@
   subset.name,
   pca.ncomponents = 30,
   pca.infer = NULL,
+  ...,
   tsne.perplexity = 20,
   tsne.ncomponents = 3,
   umap.min.dist = 0.5,
   umap.nneighbours = 15,
   umap.metric = "euclidean",
-  umap.ncomponents = 3,
-  ...
+  umap.ncomponents = 3
 )
 }
 \arguments{
@@ -26,6 +26,8 @@
 \item{pca.ncomponents}{Integer, number of components to retain}
 
 \item{pca.infer}{String, method of inference for ncomponents}
+
+\item{...}{Additional arguments for .pca}
 
 \item{tsne.perplexity}{Numeric, perplexity (size of search radius)}
 
@@ -38,8 +40,6 @@
 \item{umap.metric}{String, distance metric}
 
 \item{umap.ncomponents}{Integer, number of components}
-
-\item{...}{Additional arguments for .pca}
 }
 \value{
 \code{\link{SingleCellExperiment}} object

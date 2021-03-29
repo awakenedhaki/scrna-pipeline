@@ -2,7 +2,9 @@
 % Please edit documentation in R/dimReduced.R
 \name{.pca}
 \alias{.pca}
-\title{Perform principal component analysis on cells}
+\title{Perform principal component analysis on cells
+
+TODO: Refactor nested if statement}
 \usage{
 .pca(sce, hvariable.genes, ncomponents, infer, variance.model)
 }
@@ -22,4 +24,6 @@
 }
 \description{
 Perform principal component analysis on cells
+
+TODO: Refactor nested if statement
 }

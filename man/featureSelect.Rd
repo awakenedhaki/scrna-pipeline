@@ -10,7 +10,7 @@ featureSelect(
   prop = NULL,
   fdr.threshold = NULL,
   fit.trend = "poisson",
-  subset.name = "susbet"
+  subset.name = "subset"
 )
 }
 \arguments{

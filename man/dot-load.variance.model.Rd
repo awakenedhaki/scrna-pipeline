@@ -2,10 +2,14 @@
 % Please edit documentation in R/dimReduced.R
 \name{.load.variance.model}
 \alias{.load.variance.model}
-\title{Load variance model generated during feature selection.}
+\title{Load variance model generated during feature selection.
+
+TODO: Select the correct model file if many are present.}
 \usage{
 .load.variance.model()
 }
 \description{
 Load variance model generated during feature selection.
+
+TODO: Select the correct model file if many are present.
 }
