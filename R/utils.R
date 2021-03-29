@@ -1,6 +1,22 @@
-# Dependencies =================================================================
+# Data processing ==============================================================
 
-# Helpers ======================================================================
+#' TODO: Documentation
+.kwargs <- function(f, param, kwargs) {
+  do.call(purrr::partial(f, param), kwargs)
+}
+
+#' @title Find the index of strings that match a given pattern.
+#'
+#' @param pattern A string pattern.
+#' @param strings A vector of strings.
+#' @param matcher A matching function (ex. \code{\link{grepl}})
+#'
+#' @return Vector of numerics corresponding to indexes where the pattern matched in the string vector.
+.where <- function(pattern, strings, matcher) {
+  return(which(matcher(pattern, strings)))
+}
+
+# Logging ======================================================================
 
 #' TODO: Add documentation
 #'
@@ -27,14 +43,18 @@ logger <- function(msg) {
   futile.logger::flog.info(msg, name = 'analysis')
 }
 
+# Saving =======================================================================
+
 #' TODO: Add documentation
 #'
 #' @param obj \code{\link{SingleCellExperiment}} object
 #' @param name String, name of file
+#' @param identifier TODO
 #'
 #' @importFrom here here
-save.processed <- function(obj, name) {
-  saveRDS(obj, file = here(getwd(), 'data', 'processed', name))
+save.processed <- function(obj, name, identifier) {
+  file.name <- paste0(name, '-', identifier, '.rds')
+  saveRDS(obj, file = here(getwd(), 'data', 'processed', file.name))
 }
 
 #' TODO: Add documentation
@@ -56,4 +76,3 @@ save.diagnostic <- function(obj, name) {
 save.output <- function(obj, name) {
   saveRDS(obj, file = here(getwd(), 'output', name))
 }
-
