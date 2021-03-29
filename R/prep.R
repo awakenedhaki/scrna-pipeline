@@ -26,7 +26,6 @@
 #' @importFrom SummarizedExperiment rowData colData
 #' @importFrom scater uniquifyFeatureNames
 #' @importFrom tidyr replace_na
-#' @importFrom magrittr %>%
 #'
 #' @return \code{\link{SingleCellExperiment}} object
 #' @export
@@ -41,10 +40,8 @@ prep.data <- function(path10x, identifier) {
 
   sce$experiment.name <- identifier
 
-  colnames(SummarizedExperiment::rowData(sce)) <- sce %>%
-    SummarizedExperiment::rowData() %>%
-    names() %>%
-    tidyr::replace_na(replace = 'NA')
+  colnames(SummarizedExperiment::rowData(sce)) <-
+    tidyr::replace_na(names(SummarizedExperiment::rowData(sce)), replace = 'NA')
 
   # Save data in ./data/processed/ directory
   save.processed(sce, 'prep', identifier)
