@@ -12,6 +12,7 @@
 
 # Test files
 test/
+tmp/
 
 # Output files from R CMD build
 /*.tar.gz
