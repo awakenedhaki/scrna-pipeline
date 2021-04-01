@@ -74,19 +74,27 @@ The above command will generate the directory tree shown below.
 
 ```
 .
+├── DESCRIPTION
+├── LICENSE
+├── LICENSE.md
+├── NAMESPACE
+├── R/
+│   ├── batchCorrect.R
+│   ├── clustering.R
+│   ├── countQC.R
+│   ├── diffExp.R
+│   ├── dimReduced.R
+│   ├── featureSelect.R
+│   ├── logging.R
+│   ├── mergeSCE.R
+│   ├── normCounts.R
+│   ├── prep.R
+│   ├── saving.R
+│   └── utils.R
 ├── README.md
-├── data
-│   ├── diagnostic
-│   ├── processed
-│   ├── raw
-│   │   └── DH
-│   │       ├── barcodes.tsv
-│   │       ├── genes.tsv
-│   │       └── matrix.mtx
-│   └── temp
-├── dh.Rproj
-├── output
-├── run_analysis.R
+├── TODO
+├── blackbox.Rproj
+└── man/
 ```
 
 ## Workflow
