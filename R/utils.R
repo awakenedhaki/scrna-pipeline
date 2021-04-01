@@ -38,8 +38,16 @@ generate.log <- function(name) {
 #' @param msg String, output message
 #'
 #' @importFrom futile.logger flog.info
-logger <- function(msg) {
+console.logger <- function(msg) {
   futile.logger::flog.info(msg)
+}
+
+#' TODO: Add documentation
+#'
+#' @param msg String, output message
+#'
+#' @importFrom futile.logger flog.info
+file.logger <- function(msg) {
   futile.logger::flog.info(msg, name = 'analysis')
 }
 
@@ -49,12 +57,14 @@ logger <- function(msg) {
 #'
 #' @param obj \code{\link{SingleCellExperiment}} object
 #' @param name String, name of file
-#' @param identifier TODO
 #'
 #' @importFrom here here
-save.processed <- function(obj, name, identifier) {
-  file.name <- paste0(name, '-', identifier, '.rds')
+save.processed <- function(obj, name) {
+  file.name <- paste0(name, '.rds')
   saveRDS(obj, file = here(getwd(), 'data', 'processed', file.name))
+
+  console.logger(paste('Saved', name, 'within data/processed directory as RDS.'))
+  file.logger(paste('Saved', name, 'within data/processed directory as RDS.'))
 }
 
 #' TODO: Add documentation
@@ -64,7 +74,11 @@ save.processed <- function(obj, name, identifier) {
 #'
 #' @importFrom here here
 save.diagnostic <- function(obj, name) {
-  saveRDS(obj, file = here(getwd(), 'data', 'diagnostic', name))
+  file.name <- paste0(name, '.rds')
+  saveRDS(obj, file = here(getwd(), 'data', 'diagnostic', file.name))
+
+  console.logger(paste('Saved', name, 'within data/diagnostic directory as RDS.'))
+  file.logger(paste('Saved', name, 'within data/diagnostic directory as RDS.'))
 }
 
 #' TODO: Add documentation
@@ -75,4 +89,7 @@ save.diagnostic <- function(obj, name) {
 #' @importFrom here here
 save.output <- function(obj, name) {
   saveRDS(obj, file = here(getwd(), 'output', name))
+
+  console.logger(paste('Saved', name, 'within data/output directory as RDS.'))
+  file.logger(paste('Saved', name, 'within data/output directory as RDS.'))
 }
