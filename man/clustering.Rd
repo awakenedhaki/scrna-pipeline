@@ -2,24 +2,10 @@
 % Please edit documentation in R/clustering.R
 \name{clustering}
 \alias{clustering}
-\title{Cell clustering (dispatcher)
-
-TODO: Add hierarchical clustering}
+\title{Dispatcher function for clustering protocols.}
 \usage{
-clustering(sce, method = "graph", ...)
-}
-\arguments{
-\item{sce}{\code{\link{SingleCellExperiment}} object}
-
-\item{method}{String, method of clustering}
-
-\item{...}{Additional parameters for specified clustering method}
-}
-\value{
-\code{\link{SingleCellExperiment}} object
+clustering(sce, protocol, params)
 }
 \description{
-Cell clustering (dispatcher)
-
-TODO: Add hierarchical clustering
+Dispatcher function for clustering protocols.
 }
