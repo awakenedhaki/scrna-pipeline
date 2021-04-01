@@ -58,5 +58,6 @@ clustering <- function(sce, protocol, params) {
                                 clusters = params$k)
 
   save.diagnostic(clust.kmeans, paste0('clustering-kmeans-', params$k))
+  SingleCellExperiment::colLabels(sce) <- factor(clust.kmeans$cluster)
   return(sce)
 }
