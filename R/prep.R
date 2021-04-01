@@ -1,10 +1,3 @@
-# Dependencies =================================================================
-
-# Constants ====================================================================
-
-# Helpers ======================================================================
-
-# Functions ====================================================================
 #' @title Prepare data for processing.
 #'
 #' @details Reading 10x sample directory containing `barcodes.tsv`, `genes.tsv` and `matrix.mtx`
@@ -44,6 +37,6 @@ prep.data <- function(path10x, identifier) {
     tidyr::replace_na(names(SummarizedExperiment::rowData(sce)), replace = 'NA')
 
   # Save data in ./data/processed/ directory
-  save.processed(sce, 'prep', identifier)
+  save.processed(sce, 'prep')
   return(sce)
 }
