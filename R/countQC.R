@@ -34,6 +34,9 @@ countQC <- function(sce,
                     protocol = 'legacy',
                     rm.genes = TRUE,
                     ...) {
+	# Suffix for RDS object naming
+	IDENTIFIER <<- .get.identifier(sce)
+
 	gene.symbol.patterns <- .get.gene.symbol.patterns(criteria)
 	subsets <- .build.subsets(sce, gene.symbol.patterns)
 	qc.sce <- scater::addPerCellQC(sce, subsets = subsets)
@@ -45,6 +48,7 @@ countQC <- function(sce,
 	} else if (protocol == 'quartile') {
 		flagged.cells <- .quartile(criteria.data, ...)
 	} else if (protocol == 'scater') {
+	  # Does not store anything in diagnostics
 		flagged.cells <- .scater(sce, ...)
 	}
 
@@ -53,7 +57,9 @@ countQC <- function(sce,
 	}
 
   qc.sce <- qc.sce[, !flagged.cells]
-  save.processed(qc.sce, paste0('qc-', protocol))
+  save.processed(qc.sce, paste('qc', protocol, IDENTIFIER, sep = '-'))
+
+  rm(IDENTIFIER, pos = ".GlobalEnv")
 	return(qc.sce)
 }
 
@@ -191,7 +197,7 @@ BASE.CRITERIA <- c('^sum$', '^detected$')
     .legacy.flag.cells(criteria.data[[name]], name, ...)
   })
 
-  save.diagnostic((summary(flag.matrix)), 'qc-legacy')
+  save.diagnostic((summary(flag.matrix)), paste0('qc-legacy-', IDENTIFIER))
 
   flags <- .reduce.flag.matrix(flag.matrix)
   return(flags)
@@ -217,7 +223,7 @@ BASE.CRITERIA <- c('^sum$', '^detected$')
                                type = 'lower',
                                log = TRUE)
   } else {
-    idx <- .where(criteria.name, names(.ranges),matcher = stringr::str_detect)
+    idx <- .where(criteria.name, names(.ranges), matcher = stringr::str_detect)
     .range <- .ranges[[idx]]
     flags <- .between(criteria.column, .range)
   }
@@ -268,7 +274,7 @@ BASE.CRITERIA <- c('^sum$', '^detected$')
     .quartile.flag.cells(criteria.data[[name]])
   })
 
-  save.diagnostic((summary(flag.matrix)), 'qc-quartile')
+  save.diagnostic(summary(flag.matrix), paste0('qc-quartile-', IDENTIFIER))
 
   flags <- .reduce.flag.matrix(flag.matrix)
   return(flags)

@@ -3,11 +3,15 @@ dimReduced <- function(sce,
                        protocol,
                        seed = 100,
                        params) {
+  IDENTIFIER <<- .get.identifier(sce)
+
   set.seed(seed)
   if (protocol == 'vanilla') {
     sce <- .reduced.vanilla(sce, params)
   }
 
+  save.processed(sce, paste('dimReduced', protocol, IDENTIFIER, sep = '-'))
+  rm(IDENTIFIER, pos = ".GlobalEnv")
   return(sce)
 }
 
@@ -54,7 +58,7 @@ dimReduced <- function(sce,
   if (params$infer == 'elbow') {
     ncomponents <- findElbowPoint(.explained.variance(sce))
   } else if (params$infer == 'denoise') {
-    variance.model <- .read.variance.model()
+    variance.model <- .read.variance.model(IDENTIFIER)
     # TODO: Finding better way of passing hv.genes logical vector to denoisePCA
     denoised <- scran::denoisePCA(sce,
                                   technical = variance.model,
@@ -71,25 +75,9 @@ dimReduced <- function(sce,
 }
 
 #' TODO: documentation
-.read.variance.model <- function() {
-  # TODO: Handle multiple model files.
-  diagnostic.path <- here(getwd(), 'data', 'diagnostic')
-
-  diagnostic.files <- list.files(diagnostic.path)
-  variance.model.idx <- .where('featureSelect-.*\\.rds', diagnostic.files, matcher = grepl)
-  if (length(variance.model.idx) == 0) {
-    stop('Fitted variance model data must be within diagnostic directory.')
-  }
-
-  model.path <- here(diagnostic.path, diagnostic.files[variance.model.idx])
-  model <- readRDS(model.path)
-  return(model)
-}
-
-#' TODO: documentation
 #' @importFrom SingleCellExperiment reducedDim
 .explained.variance <- function(sce) {
   . <- attr(SingleCellExperiment::reducedDim(sce), 'percentVar')
-  save.diagnostic(., 'dimReduced-explained-variance')
+  save.diagnostic(., paste('dimReduced-explained-variance', IDENTIFIER, sep = '-'))
   return(.)
 }

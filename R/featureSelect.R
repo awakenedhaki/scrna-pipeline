@@ -39,6 +39,8 @@ featureSelect <- function(sce,
                           getter = list()) {
   # TODO: Find beeter name for `getter`
   # TODO: Think parameterization of `getTopHVGs`, should I change to `...`?
+  IDENTIFIER <<- .get.identifier(sce)
+
   if (protocol == 'vanilla') {
     gene.variance <- .mode.vanilla(sce, model)
   } else if (protocol == 'poisson') {
@@ -48,7 +50,8 @@ featureSelect <- function(sce,
   hvgs <- .kwargs(scran::getTopHVGs, gene.variance, getter)
   SingleCellExperiment::rowSubset(sce, field = protocol) <- hvgs
 
-  save.processed(sce, paste0('featureSelect-', protocol))
+  save.processed(sce, paste('featureSelect', protocol, IDENTIFIER, sep = '-'))
+  rm(IDENTIFIER, pos = ".GlobalEnv")
   return(sce)
 }
 
@@ -62,7 +65,7 @@ featureSelect <- function(sce,
     model
   )
 
-  save.diagnostic(., 'featureSelect-vanilla')
+  save.diagnostic(., paste('featureSelect-vanilla', IDENTIFIER, sep = '-'))
   return(.)
 }
 
@@ -76,6 +79,6 @@ featureSelect <- function(sce,
     model
   )
 
-  save.diagnostic(., 'featureSelect-poisson')
+  save.diagnostic(., paste('featureSelect-poisson', IDENTIFIER, sep = '-'))
   return(.)
 }
