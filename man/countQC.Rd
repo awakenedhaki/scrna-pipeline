@@ -43,6 +43,6 @@ Implementated quality control methods are:
 \itemize{
 \item Fixed tresholds: User-defined threshold for specified QC metrics.
 \item Quartile ranges: Removal of cells that fit within the first quartile range.
-\item \code{\link[scater]{quikckPerCellQCMetrics}}: Relies on QC protocol implemented within \code{\link{scater}} .
+\item \code{\link[scater]{quickPerCellQC}}: Relies on QC protocol implemented within \code{\link{scater}} .
 }
 }

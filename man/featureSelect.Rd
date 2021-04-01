@@ -4,7 +4,7 @@
 \alias{featureSelect}
 \title{Dispatcher function for feature selection protocols.}
 \usage{
-featureSelect(sce, seed = 100, protocol, model, ...)
+featureSelect(sce, seed = 100, protocol, model = list(), getter = list())
 }
 \arguments{
 \item{sce}{\code{\link{SingleCellExperiment}} object.}
