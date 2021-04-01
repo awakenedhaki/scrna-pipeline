@@ -1,5 +1,7 @@
 #' @title Dispatcher function for normalization of read counts.
 normCounts <- function(sce, protocol, seed = 100, ...) {
+  IDENTIFIER <<- .get.identifier(sce)
+
   set.seed(seed)
 	if (protocol == 'vanilla') {
 		norm.sce <- .norm.vanilla(sce, ...)
@@ -7,8 +9,9 @@ normCounts <- function(sce, protocol, seed = 100, ...) {
 		norm.sce <- .deconvolution(sce, ...)
 	}
 
-  save.processed(norm.sce, paste0('norm-', protocol))
+  save.processed(norm.sce, paste('norm-', protocol, IDENTIFIER, sep = '-'))
 
+  rm(IDENTIFIER, pos = ".GlobalEnv")
 	return(norm.sce)
 }
 
@@ -61,19 +64,10 @@ normCounts <- function(sce, protocol, seed = 100, ...) {
                                                                 proportion = 0.3),
                                          steps = 5,
                                          min.mean = 0.1)) {
-  clust.sce <- .kwargs(
-    scran::quickCluster,
-    sce,
-    clustering
-  )
+  clust.sce <- .kwargs(scran::quickCluster, sce, clustering)
+  save.diagnostic(table(clust.sce), paste0('norm-deconv-clust-', IDENTIFIER))
 
-  save.diagnostic(table(clust.sce), paste0('norm-deconv-clust'))
-
-	max.window.size <- .kwargs(
-	  .get.max.window.size,
-	  ncol(sce),
-	  deconv$max.window.size
-	)
+	max.window.size <- .kwargs(.get.max.window.size, ncol(sce), deconv$max.window.size)
 	deconv.sce <- scran::computeSumFactors(sce,
 	                                       cluster = clust.sce,
 	                                       assay.type = deconv$assay,
@@ -99,7 +93,7 @@ normCounts <- function(sce, protocol, seed = 100, ...) {
   return(max.window)
 }
 
-# . Contants ===================================================================
+# . Constants ===================================================================
 
 CLUSTERING <- list(method = 'igraph',
                    min.size = 10,
