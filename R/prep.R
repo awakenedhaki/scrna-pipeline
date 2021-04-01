@@ -31,12 +31,12 @@ prep.data <- function(path10x, identifier) {
   rownames(sce) <- scater::uniquifyFeatureNames(ID = rownames(sce),
 											                          names = SummarizedExperiment::rowData(sce)$Symbol)
 
-  sce$experiment.name <- identifier
+  sce$identifier <- identifier
 
   colnames(SummarizedExperiment::rowData(sce)) <-
     tidyr::replace_na(names(SummarizedExperiment::rowData(sce)), replace = 'NA')
 
   # Save data in ./data/processed/ directory
-  save.processed(sce, 'prep')
+  save.processed(sce, paste('prep', identifier, sep = '-'))
   return(sce)
 }
