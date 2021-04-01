@@ -32,16 +32,23 @@
 #' @return \code{\link{SingleCellExperiment}} object.
 #'   Highly variable genes are added to SingleCellExperiment::rowData.
 #' @export
-featureSelect <- function(sce, seed = 100, protocol, model, ...) {
+featureSelect <- function(sce,
+                          seed = 100,
+                          protocol,
+                          model = list(),
+                          getter = list()) {
+  # TODO: Find beeter name for `getter`
+  # TODO: Think parameterization of `getTopHVGs`, should I change to `...`?
   if (protocol == 'vanilla') {
     gene.variance <- .mode.vanilla(sce, model)
   } else if (protocol == 'poisson') {
     gene.variance <- .model.poisson(sce, model)
   }
 
-  hvgs <- scran::getTopHVGs(gene.variance, ...)
+  hvgs <- .kwargs(scran::getTopHVGs, gene.variance, getter)
   SingleCellExperiment::rowSubset(sce, field = protocol) <- hvgs
 
+  save.processed(sce, paste0('featureSelect-', protocol))
   return(sce)
 }
 
@@ -49,20 +56,26 @@ featureSelect <- function(sce, seed = 100, protocol, model, ...) {
 
 #' @importFrom scran modelGeneVar
 .model.vanilla <- function(sce, model) {
-  .kwargs(
+  . <- .kwargs(
     scran::modelGeneVar,
     sce,
     model
   )
+
+  save.diagnostic(., 'featureSelect-vanilla')
+  return(.)
 }
 
 # Poisson ======================================================================
 
 #' @importFrom scran modelGeneVarByPoisson
 .model.poisson <- function(sce, model) {
-  .kwargs(
+  . <- .kwargs(
     scran::modelGeneVarByPoisson,
     sce,
     model
   )
+
+  save.diagnostic(., 'featureSelect-poisson')
+  return(.)
 }
