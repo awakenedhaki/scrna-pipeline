@@ -7,6 +7,8 @@ normCounts <- function(sce, protocol, seed = 100, ...) {
 		norm.sce <- .deconvolution(sce, ...)
 	}
 
+  save.processed(norm.sce, paste0('norm-', protocol))
+
 	return(norm.sce)
 }
 
@@ -64,6 +66,8 @@ normCounts <- function(sce, protocol, seed = 100, ...) {
     sce,
     clustering
   )
+
+  save.diagnostic(table(clust.sce), paste0('norm-deconv-clust'))
 
 	max.window.size <- .kwargs(
 	  .get.max.window.size,
