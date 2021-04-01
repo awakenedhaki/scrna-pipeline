@@ -23,7 +23,7 @@
 #' @details Implementated quality control methods are:
 #' * Fixed tresholds: User-defined threshold for specified QC metrics.
 #' * Quartile ranges: Removal of cells that fit within the first quartile range.
-#' * \code{\link[scater]{quikckPerCellQCMetrics}}: Relies on QC protocol implemented within \code{\link{scater}} .
+#' * \code{\link[scater]{quickPerCellQC}}: Relies on QC protocol implemented within \code{\link{scater}} .
 #'
 #' @importFrom scater addPerCellQC
 #'
@@ -52,7 +52,9 @@ countQC <- function(sce,
 	  qc.sce <- qc.sce[!Reduce(f = `|`, subsets), ]
 	}
 
-	return(qc.sce[ , !flagged.cells])
+  qc.sce <- qc.sce[, !flagged.cells]
+  save.processed(qc.sce, paste0('qc-', protocol))
+	return(qc.sce)
 }
 
 # Constants ====================================================================
@@ -189,6 +191,8 @@ BASE.CRITERIA <- c('^sum$', '^detected$')
     .legacy.flag.cells(criteria.data[[name]], name, ...)
   })
 
+  save.diagnostic((summary(flag.matrix)), 'qc-legacy')
+
   flags <- .reduce.flag.matrix(flag.matrix)
   return(flags)
 }
@@ -264,6 +268,8 @@ BASE.CRITERIA <- c('^sum$', '^detected$')
     .quartile.flag.cells(criteria.data[[name]])
   })
 
+  save.diagnostic((summary(flag.matrix)), 'qc-quartile')
+
   flags <- .reduce.flag.matrix(flag.matrix)
   return(flags)
 }
@@ -291,14 +297,14 @@ BASE.CRITERIA <- c('^sum$', '^detected$')
   return(quartile)
 }
 
-# scater::quikckPerCellQCMetrics ===============================================
+# scater::quickPerCellQC ===============================================
 
-#' @title Quick quality control using \code{\link[scater]quickPerCellQCMetrics}.
+#' @title Quick quality control using \code{\link[scater]quickPerCellQC}.
 #'
 #' @param sce \code{\link{SingleCellExperiment}} object.
-#' @param ... Additional parameters for \code{\link[scater]{quickPerCellQCMetrics}}.
+#' @param ... Additional parameters for \code{\link[scater]{quickPerCellQC}}.
 #'
-#' @importFrom scater quikckPerCellQCMetrics
+#' @importFrom scater quickPerCellQC
 .scater <- function(sce, ...) {
-  scater::quickPerCellQCMetrics(sce, ...)
+  scater::quickPerCellQC(sce, ...)
 }
