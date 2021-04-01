@@ -106,3 +106,17 @@ All data is saved in the `processed` directory as a `RDS` after the main functio
 5. `dimReduced.R`: Performs dimensionality reduction through PCA, and PCA-initialized TSNE and UMAP.
 
 6. `clustering.R`
+
+## TODOs
+
+*Prefix with `TODO` for these TODOs to appear in the TODO file.*
+
+To generate a TODO file, run the following command in your terminal.
+
+```{zsh}
+$ rg --stats --regexp "TODO" --glob "\!man"
+```
+
+TODO: Find a better method for passing along `IDENTIFIER` rather than making it into a temporary global variable. `rm` will not delete the global variable made within the same scope.
+TODO: Everything upto `batchCorrect.R` is operating on a single `SingleCellExperiment` object. Should I change everything to operator on a list of `SingleCellExperiment`?
+TODO: Subset context params within a scope fo a function rather than as a paramter?
