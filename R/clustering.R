@@ -1,11 +1,16 @@
 #' @title Dispatcher function for clustering protocols.
 clustering <- function(sce, protocol, params) {
+  IDENTIFIER <<- .get.identifier(sce)
+
   if (protocol == 'graph') {
     sce <- .graph(sce, params)
   } else if (protocol == 'kmeans') {
     sce <- .kmeans(sce, params)
   }
 
+  save.processed(sce, paste('clustering', 'protocol', IDENTIFIER, sep = '-'))
+
+  rm(IDENTIFIER, pos = ".GlobalEnv")
   return(sce)
 }
 
@@ -18,13 +23,13 @@ clustering <- function(sce, protocol, params) {
   # TODO: Change naming scheme allowing for different graph-based approaches.
   graph <- .kwargs(scran::buildSNNGraph, sce, params$graphing)
 
-  if (!missing(layout)) {
+  if (('layout' %in% names(params))) {
     sce <- .generate.layout(sce, graph, params$layout)
   }
 
   f.clust <- .get.cluster.method(params$method)
-  clusters <- f.cluster(graph)$membership
-  save.diagnostic(clusters, paste0('clustering-graph-', params$grpah$k))
+  clusters <- f.clust(graph)$membership
+  save.diagnostic(clusters, paste('clustering-graph', params$graph$k, IDENTIFIER, sep = '-'))
 
   SingleCellExperiment::colLabels(sce) <- factor(clusters)
   return(sce)
@@ -33,8 +38,8 @@ clustering <- function(sce, protocol, params) {
 #' @import igraph
 #' @importFrom SingleCellExperiment reducedDim
 .generate.layout <- function(sce, graph, layout) {
-  f <- base::get(paste0('with_', layout),
-                 envir = as.environment('package:igraph'))
+  function.name <- paste0('with_', layout)
+  f <- .blackbox.namespace(function.name)
 
   field.name <- paste('force', layout, sep = '-')
   SingleCellExperiment::reducedDim(sce, field.name) <- igraph::layout_(graph, layout = f())
@@ -45,8 +50,7 @@ clustering <- function(sce, protocol, params) {
 #' @import igraph
 .get.cluster.method <- function(method) {
   function.name <- paste0('cluster_', method)
-  f <- base::get(function.name,
-                 envir = as.environment('package:igraph'))
+  f <- .blackbox.namespace(function.name)
   return(f)
 }
 
@@ -57,7 +61,7 @@ clustering <- function(sce, protocol, params) {
   clust.kmeans <- stats::kmeans(SingleCellExperiment::reducedDim(sce, params$field),
                                 clusters = params$k)
 
-  save.diagnostic(clust.kmeans, paste0('clustering-kmeans-', params$k))
+  save.diagnostic(clust.kmeans, paste('clustering-kmeans', params$k, IDENTIFIER, sep = '-'))
   SingleCellExperiment::colLabels(sce) <- factor(clust.kmeans$cluster)
   return(sce)
 }
