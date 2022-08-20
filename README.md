@@ -4,14 +4,6 @@ The Huntsman Lab single cell RNA sequencing pipeline is implemented in R (4.0.4)
 
 The pipeline was inspired by [Orchestrating Single-Cell Analysis](https://bioconductor.org/books/release/OSCA/index.html).
 
-## Installation
-
-This packages can be installed directly from GitHub. Do not submit this package to CRAN, or Bioconductor.
-
-```{R}
-devtools::install_github('Huntsmanlab/blackbox)
-```
-
 ## Background + Expected practice
 
 The pipeline has been designed as a R package, and as such any changes to the pipeline should comply with R package development conventions. For information on R package development you can read the [R packages](https://r-pkgs.org/) book by Hadley Wickham.
