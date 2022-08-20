@@ -1,4 +1,4 @@
-# Huntsman Lab Single Cell RNA Sequencing Pipeline
+# Single Cell RNA Sequencing Pipeline
 
 The Huntsman Lab single cell RNA sequencing pipeline is implemented in R (4.0.4), and uses the `SingleCellExperiment` class to interact with the dataset. The pipeline has been designed with 10x Genomics output in mind. If other scRNA-seq technologies are to be fed into this pipeline, implementation of additional features, and refacting may be necessary.
 
